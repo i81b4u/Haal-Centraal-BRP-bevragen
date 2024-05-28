@@ -5,7 +5,7 @@ Functionaliteit: Persoon: adressering velden vragen met fields/fields alias
   Wanneer een consumer van de BRP API niet is geautoriseerd voor het bevragen van de adresregel velden voor een verblijfplaats buitenland
   Dan moet de consumer de adresseringBinnenland fields alias gebruiken om aan te geven dat hij adresregel velden voor een verblijfplaats binnenland vraagt
 
-Rule: de standaard adresregel veld paden kunnen worden gebruikt door een consumer die is geautoriseerd voor het vragen van adresregels horende bij verblijfplaats binnenland (adres, locatie) en verblijfplaats buitenland
+Regel: de standaard adresregel veld paden kunnen worden gebruikt door een consumer die is geautoriseerd voor het vragen van adresregels horende bij verblijfplaats binnenland (adres, locatie) en verblijfplaats buitenland
 
   Abstract Scenario: afnemer is geautoriseerd voor 'adressering buitenland' en vraagt <sub titel>
     Gegeven de afnemer met indicatie '000008' is geautoriseerd voor 'adressering' gegevens
@@ -95,7 +95,7 @@ Rule: de standaard adresregel veld paden kunnen worden gebruikt door een consume
     | land.code         | 6014                         |
     | land.omschrijving | Verenigde Staten van Amerika |
 
-Rule: de 'adresseringBinnenland' field alias moet worden gebruikt door een consumer die niet is geautoriseerd voor het vragen van adresregels horende bij verblijfplaats buitenland
+Regel: de 'adresseringBinnenland' field alias kan worden gebruikt door een consumer die niet is geautoriseerd voor het vragen van adresregels horende bij verblijfplaats buitenland
 
   Scenario: afnemer is niet geautoriseerd voor 'adressering buitenland' en vraagt met de fields alias de adresregel velden van een verblijfplaats buitenland
     Gegeven de afnemer met indicatie '000008' is geautoriseerd voor 'adressering binnenland' gegevens
@@ -110,10 +110,11 @@ Rule: de 'adresseringBinnenland' field alias moet worden gebruikt door een consu
     | type                | RaadpleegMetBurgerservicenummer |
     | burgerservicenummer | 000000097                       |
     | fields              | <fields>                        |
-    Dan heeft de response een persoon zonder gegevens
+    Dan heeft de response een persoon zonder 'adressering' gegevens
 
     Voorbeelden:
     | fields                                                              |
+    | adresseringBinnenland                                               |
     | adresseringBinnenland.adresregel1,adresseringBinnenland.adresregel2 |
 
   Scenario: afnemer is niet geautoriseerd voor 'adressering buitenland' en vraagt met de fields alias de adresregel velden van een adres
@@ -140,6 +141,7 @@ Rule: de 'adresseringBinnenland' field alias moet worden gebruikt door een consu
 
     Voorbeelden:
     | fields                                                              |
+    | adresseringBinnenland                                               |
     | adresseringBinnenland.adresregel1,adresseringBinnenland.adresregel2 |
 
   Abstract Scenario: afnemer is niet geautoriseerd voor 'adressering buitenland' en vraagt met de fields alias een adresregel veld van een verblijfplaats buitenland
@@ -155,7 +157,7 @@ Rule: de 'adresseringBinnenland' field alias moet worden gebruikt door een consu
     | type                | RaadpleegMetBurgerservicenummer |
     | burgerservicenummer | 000000097                       |
     | fields              | adresseringBinnenland.<field>   |
-    Dan heeft de response een persoon zonder gegevens
+    Dan heeft de response een persoon zonder 'adressering' gegevens
 
     Voorbeelden:
     | field       |

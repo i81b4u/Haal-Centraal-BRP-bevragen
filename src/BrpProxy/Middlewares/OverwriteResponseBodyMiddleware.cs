@@ -8,7 +8,7 @@ using AutoMapper;
 using BrpProxy.Validators;
 using Newtonsoft.Json.Linq;
 using Serilog;
-using Brp.Shared.Infrastructure.ProblemDetails;
+using FluentValidation.Results;
 
 namespace BrpProxy.Middlewares
 {
@@ -48,7 +48,7 @@ namespace BrpProxy.Middlewares
 
                 requestBody = await context.Request.ReadBodyAsync();
 
-                if (!await context.RequestBodyIsValid(requestBody, orgBodyStream, _diagnosticContext))
+                if (!await context.HandleRequestBodyIsValidJson(requestBody, new DummyRequestBodyValidationService(), _diagnosticContext))
                 {
                     return;
                 }
@@ -91,7 +91,8 @@ namespace BrpProxy.Middlewares
 
                 if (Log.IsEnabled(Serilog.Events.LogEventLevel.Debug))
                 {
-                    _diagnosticContext.Set("original responseBody", body);
+                    _diagnosticContext.Set("original response headers", context.Response.Headers);
+                    _diagnosticContext.Set("original response body", body);
                 }
 
                 var resultFields = personenQuery is RaadpleegMetBurgerservicenummer
@@ -114,10 +115,19 @@ namespace BrpProxy.Middlewares
             }
             catch (Exception ex)
             {
-                _diagnosticContext.SetException(ex);
+                // om onbekend reden wordt een AutomapperMappingException niet gelogd als SetException wordt gebruikt
+                _diagnosticContext.Set("exception", ex);
 
-                await context.HandleInternalServerError();
+                await context.HandleUnhandledException(requestBody, ex, orgBodyStream, _diagnosticContext);
             }
+        }
+    }
+
+    internal class DummyRequestBodyValidationService : IRequestBodyValidator
+    {
+        public ValidationResult ValidateRequestBody(string requestBody)
+        {
+            return new ValidationResult();
         }
     }
 
@@ -128,6 +138,7 @@ namespace BrpProxy.Middlewares
             var result = personenQuery switch
             {
                 RaadpleegMetBurgerservicenummer query => new RaadpleegMetBurgerservicenummerQueryValidator(fieldsHelper).Validate(query),
+                ZoekMetAdresseerbaarObjectIdentificatie query => new ZoekMetAdresseerbaarObjectIdentificatieQueryValidator(fieldsHelper).Validate(query),
                 ZoekMetGeslachtsnaamEnGeboortedatum query => new ZoekMetGeslachtsnaamEnGeboortedatumQueryValidator(fieldsHelper).Validate(query),
                 ZoekMetPostcodeEnHuisnummer query => new ZoekMetPostcodeEnHuisnummerQueryValidator(fieldsHelper).Validate(query),
                 ZoekMetNaamEnGemeenteVanInschrijving query => new ZoekMetNaamEnGemeenteVanInschrijvingQueryValidator(fieldsHelper).Validate(query),
@@ -209,6 +220,11 @@ namespace BrpProxy.Middlewares
                     var result5 = mapper.Map<ZoekMetStraatHuisnummerEnGemeenteVanInschrijvingResponse>(pb);
                     result5.Personen = result5.Personen.ExcludeAfgevoerdePersoon().FilterList(fields);
                     retval = result5;
+                    break;
+                case Gba.ZoekMetAdresseerbaarObjectIdentificatieResponse pb:
+                    var result6 = mapper.Map<ZoekMetAdresseerbaarObjectIdentificatieResponse>(pb);
+                    result6.Personen = result6.Personen.ExcludeAfgevoerdePersoon().FilterList(fields);
+                    retval = result6;
                     break;
                 default:
                     throw new NotSupportedException();

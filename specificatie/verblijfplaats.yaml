@@ -201,6 +201,7 @@ components:
             $ref: 'datum.yaml#/components/schemas/AbstractDatum'
           datumIngangGeldigheid:
             $ref: 'datum.yaml#/components/schemas/AbstractDatum'
+            deprecated: true
           inOnderzoek:
             $ref: '#/components/schemas/VerblijfplaatsBuitenlandInOnderzoek'
     Adres:
@@ -227,6 +228,7 @@ components:
               $ref: 'datum.yaml#/components/schemas/AbstractDatum'
             datumIngangGeldigheid:
               $ref: 'datum.yaml#/components/schemas/AbstractDatum'
+              deprecated: true
             indicatieVastgesteldVerblijftNietOpAdres:
               $ref: '#/components/schemas/IndicatieVastgesteldVerblijftNietOpAdres'
             inOnderzoek:
@@ -248,6 +250,7 @@ components:
               $ref: "#/components/schemas/VerblijfadresLocatie"
             datumIngangGeldigheid:
               $ref: 'datum.yaml#/components/schemas/AbstractDatum'
+              deprecated: true
             indicatieVastgesteldVerblijftNietOpAdres:
               $ref: '#/components/schemas/IndicatieVastgesteldVerblijftNietOpAdres'
             inOnderzoek:
@@ -261,6 +264,7 @@ components:
               $ref: 'datum.yaml#/components/schemas/AbstractDatum'
             datumIngangGeldigheid:
               $ref: 'datum.yaml#/components/schemas/AbstractDatum'
+              deprecated: true
             inOnderzoek:
               $ref: '#/components/schemas/VerblijfplaatsOnbekendInOnderzoek'
     GbaVerblijfplaats:
@@ -278,6 +282,7 @@ components:
               $ref: 'datum.yaml#/components/schemas/GbaDatum'
             datumIngangGeldigheid:
               $ref: 'datum.yaml#/components/schemas/GbaDatum'
+              deprecated: true
             functieAdres:
               $ref: 'common.yaml#/components/schemas/Waardetabel'
             naamOpenbareRuimte:
@@ -293,6 +298,7 @@ components:
               type: boolean
             datumIngangGeldigheid:
               type: boolean
+              deprecated: true
     VerblijfadresBuitenlandInOnderzoek:
       allOf:
         - $ref: 'persoon.yaml#/components/schemas/InOnderzoek'
@@ -338,6 +344,7 @@ components:
               type: boolean
             datumIngangGeldigheid:
               type: boolean
+              deprecated: true
             nummeraanduidingIdentificatie:
               type: boolean
             adresseerbaarObjectIdentificatie:
@@ -355,6 +362,7 @@ components:
               type: boolean
             datumIngangGeldigheid:
               type: boolean
+              deprecated: true
     LocatieInOnderzoek:
       allOf:
         - $ref: 'persoon.yaml#/components/schemas/InOnderzoek'
@@ -368,6 +376,7 @@ components:
               type: boolean
             datumIngangGeldigheid:
               type: boolean
+              deprecated: true
     VerblijfadresLocatieInOnderzoek:
       allOf:
         - $ref: 'persoon.yaml#/components/schemas/InOnderzoek'

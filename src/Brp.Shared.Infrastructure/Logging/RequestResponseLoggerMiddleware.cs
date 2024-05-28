@@ -1,4 +1,5 @@
 ﻿using Brp.Shared.Infrastructure.Http;
+using Brp.Shared.Infrastructure.ProblemDetails;
 using Brp.Shared.Infrastructure.Stream;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
@@ -39,17 +40,24 @@ internal class RequestResponseLoggerMiddleware
 
         using(LogContext.PushProperty("CorrelationId", correlationId))
         {
-            await _next(context);
+            try
+            {
+                await _next(context);
+            }
+            catch(Exception ex)
+            {
+                _diagnosticContext.SetException(ex);
+
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+                await context.HandleInternalServerError();
+            }
         }
 
         var responseBody = context.Response.Body.CanRead
             ? await context.Response.ReadBodyAsync()
             : await newBodyStream.ReadAsync(context.Response.UseGzip());
 
-        if (context.Response.Headers.ContainsKey("x-geleverde-pls"))
-        {
-            context.Response.Headers.Remove("x-geleverde-pls");
-        }
         _diagnosticContext.Set("ResponseHeaders", context.Response.Headers);
 
         if(context.Response.StatusCode >= StatusCodes.Status400BadRequest)
