@@ -20,9 +20,9 @@ Download de [OAS3 specificatie]({{ site.mainBranchUrl }}/specificatie/genereerva
 
 De [functionele documentatie](./features-overzicht) van de {{ site.apiname }} vind je in het [features overzicht](./features-overzicht).
 
-## Probeer en test de API in de proefomgeving
+## Probeer en test de API in de demo omgeving
 
-Je kunt de {{ site.apiname }} uitproberen op de proefomgeving met de volgende url: [{{ site.proefProxyUrl }}]. Hiervoor heb je een apikey nodig.
+Je kunt de {{ site.apiname }} uitproberen op de demo omgeving met de volgende url: [{{ site.proefProxyUrl }}]. Hiervoor heb je een apikey nodig.
 
 - Vraag een apikey aan bij de product owner [{{ site.PO-email }}](mailto:{{ site.PO-email }}). 
 - Voeg de apikey toe aan een request met de __X-API-KEY__ header.
@@ -32,6 +32,8 @@ Je kunt de {{ site.apiname }} uitproberen op de proefomgeving met de volgende ur
 Een mock van de {{ site.apiname }} is beschikbaar als een containerized applicatie, die je gemakkelijk kunt hosten op een lokale machine of in een testomgeving. Bijkomend voordeel is dat je je eigen testgevallen kunt toevoegen aan het JSON bestand.
 
 Je kunt het [docker compose bestand]({{ site.mainBranchUrl }}/docker-compose-mock.yml){:target="_blank" rel="noopener"} gebruiken om de {{ site.apiname }} mock met behulp van [Docker Desktop](https://www.docker.com/products/docker-desktop) te draaien op een lokale machine.
+
+In het [docker compose bestand]({{ site.mainBranchUrl }}/docker-compose-mock.yml){:target="_blank" rel="noopener"} is een volume map geconfigureerd naar de ./src/config/BrpService map met het test-data.json bestand. Dit bestand bevat gegevens van persoonslijsten die voorkomen in de LAP omgeving en kan worden uitgebreid met eigen test persoonsgegevens. Herstart de container als het test-data.json bestand is gewijzigd. Aangezien dit bestand kan worden bijgewerkt, is het handig om wijzigingen aan het einde van het bestand toe te voegen. Dit maakt het makkelijker om eigen wijzigingen veilig te stellen voordat het bestand lokaal moet worden bijgewerkt.  
 
 In plaats van het docker compose bestand kun je de [Kubernetes configuratie bestanden]({{ site.devBranchUrl}}/.k8s){:target="_blank" rel="noopener"} gebruiken om de {{ site.apiname }} mock te draaien op een lokale machine. De {{ site.apiname }} mock maakt gebruik van de [testdataset persoonslijsten proefomgevingen GBA-V](https://www.rvig.nl/media/288) als input om de productie situatie zoveel mogelijk te kunnen simuleren.
 
